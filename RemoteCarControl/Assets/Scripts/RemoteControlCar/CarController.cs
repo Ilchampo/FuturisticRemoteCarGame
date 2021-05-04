@@ -18,7 +18,7 @@ public class AxleInformation
 public class CarMotor
 {
     private float speedInput;
-    private float turnInput;
+    private float turnInput;                                                                                                                                                
     public float forwardAcceleration = 8f;
     public float reverseAcceleration = 4f;
     public float maxSpeed = 50f;
@@ -51,11 +51,14 @@ public class CarPhysics
 // Main CarController class
 public class CarController : MonoBehaviour
 {
+    #region Define Class Attributes
     public Rigidbody carRigidBody;
     public List<AxleInformation> axleInformation;
     public CarMotor motor;
     public CarPhysics physicsAttributes;
+    #endregion
 
+    #region Unity Methods
     // Default attributes or methods when initialized 
     void Start()
     {
@@ -73,7 +76,15 @@ public class CarController : MonoBehaviour
         transform.position = carRigidBody.transform.position;
     }
 
-    #region Movement Attributes
+    // Call methods related to physics here
+    void FixedUpdate()
+    {
+        checkIfOnGround();
+        movesCarForward();
+    }
+    #endregion
+
+    #region Movement Methods
     // Wheel rotation animation
     private void wheelAnimation()
     {
@@ -147,13 +158,7 @@ public class CarController : MonoBehaviour
             physicsAttributes.setOnGround(true);
             transform.rotation = Quaternion.FromToRotation(transform.up, raycastHit.normal) * transform.rotation;
         }
+        else physicsAttributes.setOnGround(false);
     }
     #endregion
-
-    // Call methods related to physics here
-    void FixedUpdate()
-    {
-        checkIfOnGround();
-        movesCarForward();
-    }
 }
